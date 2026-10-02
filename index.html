@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Vault — Earn Free Crypto</title>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --card-bg: rgba(22, 30, 46, 0.85);
+            --bright-border: #ff6b00;
+            --accent-orange: #ff6b00;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --btn-grad: linear-gradient(135deg, #ff6b00 0%, #d97706 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            padding-bottom: 60px;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 10%, rgba(255, 107, 0, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 80% 60%, rgba(56, 189, 248, 0.08) 0%, transparent 45%);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 107, 0, 0.15);
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(255, 107, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        header h1 span {
+            background: linear-gradient(90deg, #ff6b00, #fbcfe8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+        }
+
+        /* Section Styling & Auto-hide */
+        .faucet-section {
+            display: none;
+        }
+
+        .faucet-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .section-title span {
+            color: var(--accent-orange);
+        }
+
+        /* Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--bright-border);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #ff8533;
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.45);
+        }
+
+        /* Приглушенная серая шапка карточки */
+        .card-header-grey {
+            background: #1e293b;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 107, 0, 0.15);
+            color: var(--accent-orange);
+            border: 1px solid var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .brand-logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--bright-border);
+        }
+
+        .brand-text h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1.2;
+        }
+
+        .brand-text span {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .capsule-tag-grey {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .profit-banner {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-bullets {
+            list-style: none;
+            margin-bottom: 22px;
+        }
+
+        .feature-bullets li {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-bullets li::before {
+            content: "•";
+            color: var(--accent-orange);
+            font-size: 1.2rem;
+            line-height: 0;
+        }
+
+        .card-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 107, 0, 0.2);
+        }
+
+        .payout-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .payout-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .wallet-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .btn-wallet {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-wallet:hover {
+            background: rgba(255, 107, 0, 0.2);
+            border-color: var(--accent-orange);
+            color: #ffffff;
+        }
+
+        .btn-claim {
+            background: var(--btn-grad);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-claim:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.6);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="hero-badge">⚡ Verified List 2026</span>
+        <h1>Crypto <span>Vault</span></h1>
+        <p>Top paying crypto faucets & instant withdrawal platforms</p>
+    </header>
+
+    <main class="container">
+
+        <!-- СЕКЦИЯ: NEW FAUCETS -->
+        <section id="new-section" class="faucet-section">
+            <h2 class="section-title">✨ <span>New</span> Faucets</h2>
+            <div id="new-grid" class="cards-grid"></div>
+        </section>
+
+        <!-- СЕКЦИЯ: TRUSTED FAUCETS -->
+        <section id="trusted-section" class="faucet-section">
+            <h2 class="section-title">🛡️ <span>Trusted</span> Faucets</h2>
+            <div id="trusted-grid" class="cards-grid"></div>
+        </section>
+
+    </main>
+
+    <script>
+        // =========================================================================
+        //  БАЗА ДАННЫХ КРАНОВ (РЕДАКТИРУЙТЕ И ДОБАВЛЯЙТЕ ТОЛЬКО ЗДЕСЬ)
+        // =========================================================================
+        const faucetsData = [
+            {
+                name: "Earnbitmoon",
+                type: "trusted", // 'new' или 'trusted'
+                category: "Faucet & PTC",
+                tag: "🔥 Top Pick",
+                iconText: "EBM", 
+                iconImg: "", // Путь к картинке (например "images/ebm.png") или оставьте "" для букв
+                profitBanner: "💎 Claim every 5 min",
+                bullets: [
+                    "More than 1M active users",
+                    "Level up account",
+                    "Instant payments"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                    { title: "CWallet", url: "https://cwallet.com/referralweb/P0Pj8TWb?type=signup" }
+                ],
+                refUrl: "https://earnbitmoon.club/?ref=1072950"
+            },
+            {
+                name: "CoinAdster",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "🎁 Bonus",
+                iconText: "CA",
+                iconImg: "",
+                profitBanner: "💎 Claim every 5 min",
+                bullets: [
+                    "Daily Bonus",
+                    "Level up account",
+                    "Faucet, PTC ads, SLinks, Offers"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" }                    
+                ],
+                refUrl: "https://coinadster.com/?ref=314724"
+            },
+            {
+                name: "Vie Faucet",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "🔥 Top Pick",
+                iconText: "VF",
+                iconImg: "",
+                profitBanner: "💎 Claim every 4 min",
+                bullets: [
+                    "Daily Bonus",
+                    "Faucet, PTC ads, SLinks, Offers",
+                    "Multiple withdrawal options"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                    { title: "CWallet", url: "https://cwallet.com/referralweb/P0Pj8TWb?type=signup" }
+                ],
+                refUrl: "https://viefaucet.com?r=67ddb1a3eb0a1b49c7589860"
+            },
+            {
+                name: "Tap-Coin",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "✨ Mini Game",
+                iconText: "TC",
+                iconImg: "",
+                profitBanner: "✨ Faucet and Mini Game",
+                bullets: [
+                    "Daily Bonus",
+                    "Faucet, PTC ads",
+                    "Mini Game"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                ],
+                refUrl: "https://tap-coin.de/refer/user/77399"
+            },
+            {
+                name: "Earnviv",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "✨ Highest Reward",
+                iconText: "EV",
+                iconImg: "",
+                profitBanner: "💎 Claim every 10 min",
+                bullets: [
+                    "Faucet, PTC ads, SLinks, Offers",
+                    "Wheel of Fortune",
+                    "Tasks"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                ],
+                refUrl: "https://earnviv.com/?r=myshki"
+            },
+            {
+                name: "FireFaucet",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "🔥 Top Pick",
+                iconText: "FF",
+                iconImg: "",
+                profitBanner: "💎 Claim every 30 min",
+                bullets: [
+                    "Faucet, PTC ads, SLinks, Offers",
+                    "Daily Bonus",
+                    "Tasks"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                ],
+                refUrl: "https://firefaucet.win/ref/1422801"
+            },
+            {
+                name: "Cointyply",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "✨ Best Mobile App",
+                iconText: "CP",
+                iconImg: "",
+                profitBanner: "✨ Highest Rewards",
+                bullets: [
+                    "PTC ads, Offers, Surveys",
+                    "Wheel Spin",
+                    "Mystery Boxes"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                ],
+                refUrl: "https://cointiply.mobi/W6En9X"
+            },
+            {
+                name: "EarnBitSun",
+                type: "trusted",
+                category: "Faucet & PTC",
+                tag: "✨ New",
+                iconText: "ES",
+                iconImg: "",
+                profitBanner: "💎 Claim every 5 min",
+                bullets: [
+                    "PTC ads, Offers, Surveys",
+                    "Daily Bonus",
+                    "Instant Payment"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://faucetpay.io/r/8800874" },
+                ],
+                refUrl: "https://earnbitsun.club?ref=KMRPK2KC"
+            }
+            /* СЮДА МОЖНО ДОБАВЛЯТЬ НОВЫЕ КРАНЫ, НАПРИМЕР:
+            ,{
+                name: "NewFaucetItem",
+                type: "new",
+                category: "Instant Faucet",
+                tag: "✨ NEW",
+                iconText: "NF",
+                iconImg: "",
+                profitBanner: "⚡ High paying claims every hour",
+                bullets: [
+                    "Direct payout to micro-wallets",
+                    "No minimum withdrawal threshold",
+                    "Friendly dashboard interface"
+                ],
+                wallets: [
+                    { title: "FaucetPay", url: "https://YOUR_LINK" }
+                ],
+                refUrl: "https://YOUR_REF_LINK"
+            }
+            */
+        ];
+
+        // =========================================================================
+        //  ЛОГИКА АВТОМАТИЧЕСКОГО РЕНДЕРИНГА (НЕ ТРЕБУЕТ РЕДАКТИРОВАНИЯ)
+        // =========================================================================
+        function renderCards() {
+            const newGrid = document.getElementById('new-grid');
+            const trustedGrid = document.getElementById('trusted-grid');
+            
+            let newCount = 0;
+            let trustedCount = 0;
+
+            faucetsData.forEach(faucet => {
+                // Создаем элементы кошельков
+                const walletsHTML = faucet.wallets.map(w => 
+                    `<a href="${w.url}" target="_blank" rel="noopener" class="btn-wallet">${w.title} ↗</a>`
+                ).join('');
+
+                // Создаем элементы маркеров
+                const bulletsHTML = faucet.bullets.map(b => 
+                    `<li>${b}</li>`
+                ).join('');
+
+                // Иконка: логотип или буквенный аватар
+                const iconHTML = faucet.iconImg 
+                    ? `<img src="${faucet.iconImg}" alt="${faucet.name}" class="brand-logo-img">`
+                    : `<div class="brand-icon">${faucet.iconText}</div>`;
+
+                // Полная верстка карточки
+                const cardHTML = `
+                    <div class="card">
+                        <div class="card-header-grey">
+                            <div class="brand-info">
+                                ${iconHTML}
+                                <div class="brand-text">
+                                    <h3>${faucet.name}</h3>
+                                    <span>${faucet.category}</span>
+                                </div>
+                            </div>
+                            <span class="capsule-tag-grey">${faucet.tag}</span>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+                                <div class="profit-banner">${faucet.profitBanner}</div>
+                                <ul class="feature-bullets">${bulletsHTML}</ul>
+                            </div>
+
+                            <div class="card-bottom">
+                                <div class="payout-section">
+                                    <span class="payout-label">Withdraw to:</span>
+                                    <div class="wallet-buttons">${walletsHTML}</div>
+                                </div>
+                                <a href="${faucet.refUrl}" target="_blank" rel="noopener" class="btn-claim">Earn Now ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Вставка в нужный блок
+                if (faucet.type === 'new') {
+                    newGrid.innerHTML += cardHTML;
+                    newCount++;
+                } else {
+                    trustedGrid.innerHTML += cardHTML;
+                    trustedCount++;
+                }
+            });
+
+            // Показываем раздел только если в нем есть хоть 1 кран
+            if (newCount > 0) document.getElementById('new-section').classList.add('active');
+            if (trustedCount > 0) document.getElementById('trusted-section').classList.add('active');
+        }
+
+        // Запуск генерации при загрузке страницы
+        document.addEventListener('DOMContentLoaded', renderCards);
+    </script>
+
+</body>
+</html>
